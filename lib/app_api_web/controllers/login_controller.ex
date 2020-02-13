@@ -1,4 +1,4 @@
-defmodule AppApiWeb.AdminController do
+defmodule AppApiWeb.LoginController do
   use AppApiWeb, :controller
 
   def index(conn, _params) do
