@@ -7,6 +7,7 @@ defmodule AppApiWeb.Router do
 
   scope "/api", AppApiWeb do
     pipe_through :api
-    get "login", LoginController, :index
+    get "/login", LoginController, :index
+    get "/person/info", PersonController, :index
   end
 end
