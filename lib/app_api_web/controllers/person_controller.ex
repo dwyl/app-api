@@ -13,7 +13,8 @@ defmodule AppApiWeb.PersonController do
     case HTTPoison.get(url, headers) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         data = Poison.decode!(body)
-        person = %{name: "Simon!!", email: data["data"]["email"]}
+        # get name from api
+        person = %{name: "", email: data["data"]["email"]}
         render(conn, "index.json", person: person)
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
