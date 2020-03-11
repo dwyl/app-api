@@ -1,11 +1,13 @@
 defmodule AppApi.Captures.Capture do
   use Ecto.Schema
   import Ecto.Changeset
+  alias AppApi.Timers.Timer
 
   schema "captures" do
     field :completed, :boolean, default: false
     field :id_person, :integer
     field :text, :string
+    has_many :timers, Timer
 
     timestamps()
   end

@@ -17,6 +17,8 @@ defmodule AppApiWeb.Router do
 
   scope "/api", AppApiWeb do
     pipe_through [:api, :person]
-    resources "/capture", CaptureController, only: [:index, :create]
+    resources "/capture", CaptureController, only: [:index, :create] do
+      resources "/timers", TimerController, only: [:index, :create, :update]
+    end
   end
 end

@@ -2,7 +2,6 @@ defmodule AppApiWeb.CaptureView do
   use AppApiWeb, :view
 
   def render("index.json", %{captures: captures}) do
-
     %{data: Enum.map(captures, &capture_to_json/1)}
   end
 
@@ -11,6 +10,11 @@ defmodule AppApiWeb.CaptureView do
   end
 
   def capture_to_json(capture) do
-    %{id_person: capture.id_person, text: capture.text, completed: capture.completed}
+    %{
+      capture_id: capture.id,
+      id_person: capture.id_person,
+      text: capture.text,
+      completed: capture.completed
+    }
   end
 end
