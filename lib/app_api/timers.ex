@@ -59,7 +59,7 @@ defmodule AppApi.Timers do
   def update_timer(%Timer{} = timer, attrs) do
     timer
     |> Timer.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update!()
   end
 
   def stop_timer(id) do

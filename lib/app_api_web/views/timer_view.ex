@@ -9,6 +9,10 @@ defmodule AppApiWeb.TimerView do
     %{data: timer_to_json(timer)}
   end
 
+  def render("update.json", %{timer: timer}) do
+    %{data: timer_to_json(timer)}
+  end
+
   def timer_to_json(timer) do
     %{
       timer_id: timer.id,

@@ -9,23 +9,40 @@ defmodule AppApiWeb.TimerController do
   end
 
   def create(conn, params) do
-    # check capture_id from id belong to assigns.person
-    # otherwise return 401
-
     capture = Captures.get_capture!(params["capture_id"])
-    attrs = %{started_at: NaiveDateTime.utc_now()}
-
-    # return the timer created
-    {:ok, timer} = Timers.create_timer(capture, attrs)
-    render(conn, "create.json", timer: timer)
-  end
-
-  def update(conn, %{"capture_id" => _capture_id, "id" => timer_id, "action" => action}) do
-    case action do
-      "stop" -> Timers.stop_timer(timer_id)
-      _ -> IO.inspect("wrong action on timer")
+    # timer can be added only if the auth person
+    # has previously created the capture
+    if capture.id_person == conn.assigns.person.id_person do
+      attrs = %{started_at: NaiveDateTime.utc_now()}
+      {:ok, timer} = Timers.create_timer(capture, attrs)
+      render(conn, "create.json", timer: timer)
+    else
+      conn
+      |> put_resp_header("www-authenticate", "Bearer realm=\"Person access\"")
+      |> send_resp(401, "unauthorized")
+      |> halt()
     end
-
-    render(conn, "index.json", timers: [])
   end
+
+  def update(conn, %{"capture_id" => capture_id, "id" => timer_id, "action" => action}) do
+    case action do
+      "stop" ->
+        capture = Captures.get_capture!(capture_id)
+        if capture.id_person == conn.assigns.person.id_person do
+          timer = Timers.stop_timer(timer_id)
+          render(conn, "update.json", timer: timer)
+        else
+          conn
+          |> put_resp_header("www-authenticate", "Bearer realm=\"Person access\"")
+          |> send_resp(401, "unauthorized")
+          |> halt()
+        end
+      _ ->
+          conn
+          |> send_resp(404, "timer action not found")
+          |> halt()
+    end
+  end
+
+
 end
