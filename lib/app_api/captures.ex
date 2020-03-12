@@ -7,7 +7,6 @@ defmodule AppApi.Captures do
   alias AppApi.Repo
 
   alias AppApi.Captures.Capture
-  alias AppApi.Timers.Timer
 
   @doc """
   Returns the list of captures.
@@ -43,7 +42,6 @@ defmodule AppApi.Captures do
       from c in Capture,
         where: c.id_person == ^id_person,
         preload: [:timers]
-
 
     Repo.all(query)
   end
