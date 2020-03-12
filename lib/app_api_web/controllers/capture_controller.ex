@@ -3,7 +3,6 @@ defmodule AppApiWeb.CaptureController do
 
   def index(conn, _params) do
     captures = AppApi.Captures.get_capture_by_id_person(conn.assigns.person.id_person)
-
     render(conn, "index.json", captures: captures)
   end
 

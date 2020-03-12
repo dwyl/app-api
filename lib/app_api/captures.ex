@@ -38,7 +38,11 @@ defmodule AppApi.Captures do
   def get_capture!(id), do: Repo.get!(Capture, id)
 
   def get_capture_by_id_person(id_person) do
-    query = from c in Capture, where: c.id_person == ^id_person
+    query =
+      from c in Capture,
+        where: c.id_person == ^id_person,
+        preload: [:timers]
+
     Repo.all(query)
   end
 
