@@ -61,7 +61,8 @@ defmodule AppApi.Captures do
   def create_capture(attrs \\ %{}) do
     %Capture{}
     |> Capture.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert!()
+    |> Repo.preload(:timers)
   end
 
   @doc """

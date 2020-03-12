@@ -8,7 +8,7 @@ defmodule AppApiWeb.CaptureController do
 
   def create(conn, params) do
     capture = %{text: params["text"], id_person: conn.assigns.person.id_person}
-    {:ok, capture} = AppApi.Captures.create_capture(capture)
+    capture = AppApi.Captures.create_capture(capture)
     render(conn, "create.json", capture: capture)
   end
 end
