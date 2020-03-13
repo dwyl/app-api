@@ -45,7 +45,7 @@ defmodule AppApi.Timers do
       [%Timer{}, ...]
   """
   def get_capture_timers(capture_id) do
-    query = from t in Timer, where: t.capture_id == ^capture_id, order_by: [desc: t.created_at]
+    query = from t in Timer, where: t.capture_id == ^capture_id, order_by: [desc: t.inserted_at]
     Repo.all(query)
   end
 

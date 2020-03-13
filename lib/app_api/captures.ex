@@ -42,8 +42,8 @@ defmodule AppApi.Captures do
     query =
       from c in Capture,
         where: c.id_person == ^id_person,
-        order_by: [desc: c.created_at],
-        preload: [timers: ^from(t in Timer, order_by: [desc: t.created_at])]
+        order_by: [desc: c.inserted_at],
+        preload: [timers: ^from(t in Timer, order_by: [desc: t.inserted_at])]
 
     Repo.all(query)
   end
@@ -64,7 +64,7 @@ defmodule AppApi.Captures do
     %Capture{}
     |> Capture.changeset(attrs)
     |> Repo.insert!()
-    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.created_at]))
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
   end
 
   @doc """
@@ -83,7 +83,7 @@ defmodule AppApi.Captures do
     capture
     |> Capture.changeset(attrs)
     |> Repo.update!()
-    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.created_at]))
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
   end
 
   @doc """
