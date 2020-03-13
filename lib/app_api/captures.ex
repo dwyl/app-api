@@ -7,6 +7,7 @@ defmodule AppApi.Captures do
   alias AppApi.Repo
 
   alias AppApi.Captures.Capture
+  alias AppApi.Timers.Timer
 
   @doc """
   Returns the list of captures.
@@ -41,7 +42,8 @@ defmodule AppApi.Captures do
     query =
       from c in Capture,
         where: c.id_person == ^id_person,
-        preload: [:timers]
+        order_by: [desc: c.created_at],
+        preload: [timers: ^from(t in Timer, order_by: [desc: t.created_at])]
 
     Repo.all(query)
   end
@@ -62,7 +64,7 @@ defmodule AppApi.Captures do
     %Capture{}
     |> Capture.changeset(attrs)
     |> Repo.insert!()
-    |> Repo.preload(:timers)
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.created_at]))
   end
 
   @doc """
@@ -80,7 +82,8 @@ defmodule AppApi.Captures do
   def update_capture(%Capture{} = capture, attrs) do
     capture
     |> Capture.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update!()
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.created_at]))
   end
 
   @doc """
