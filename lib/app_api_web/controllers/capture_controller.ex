@@ -20,6 +20,25 @@ defmodule AppApiWeb.CaptureController do
     end
   end
 
+  def update(conn, params) do
+    capture = Captures.get_capture!(params["id"])
+
+    if capture.id_person == conn.assigns.person.id_person do
+      updates = %{
+        completed: params["completed"],
+        text: params["text"]
+      }
+
+      udpatedCatpure = Captures.update_capture(capture, updates)
+      render(conn, "show.json", capture: udpatedCatpure)
+    else
+      conn
+      |> put_resp_header("www-authenticate", "Bearer realm=\"Capture access\"")
+      |> send_resp(401, "unauthorized")
+      |> halt()
+    end
+  end
+
   def create(conn, params) do
     capture = %{text: params["text"], id_person: conn.assigns.person.id_person}
     capture = Captures.create_capture(capture)
