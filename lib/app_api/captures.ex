@@ -36,7 +36,10 @@ defmodule AppApi.Captures do
       ** (Ecto.NoResultsError)
 
   """
-  def get_capture!(id), do: Repo.get!(Capture, id)
+  def get_capture!(id) do
+    Repo.get!(Capture, id)
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
+  end
 
   def get_capture_by_id_person(id_person) do
     query =

@@ -6,6 +6,10 @@ defmodule AppApiWeb.CaptureView do
     %{data: Enum.map(captures, &capture_to_json/1)}
   end
 
+  def render("show.json", %{capture: capture}) do
+    %{data: capture_to_json(capture)}
+  end
+
   def render("create.json", %{capture: capture}) do
     %{data: capture_to_json(capture)}
   end

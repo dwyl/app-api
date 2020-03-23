@@ -1,14 +1,28 @@
 defmodule AppApiWeb.CaptureController do
   use AppApiWeb, :controller
+  alias AppApi.Captures
 
   def index(conn, _params) do
-    captures = AppApi.Captures.get_capture_by_id_person(conn.assigns.person.id_person)
+    captures = Captures.get_capture_by_id_person(conn.assigns.person.id_person)
     render(conn, "index.json", captures: captures)
+  end
+
+  def show(conn, params) do
+    capture = Captures.get_capture!(params["id"])
+
+    if capture.id_person == conn.assigns.person.id_person do
+      render(conn, "show.json", capture: capture)
+    else
+      conn
+      |> put_resp_header("www-authenticate", "Bearer realm=\"Capture access\"")
+      |> send_resp(401, "unauthorized")
+      |> halt()
+    end
   end
 
   def create(conn, params) do
     capture = %{text: params["text"], id_person: conn.assigns.person.id_person}
-    capture = AppApi.Captures.create_capture(capture)
+    capture = Captures.create_capture(capture)
     render(conn, "create.json", capture: capture)
   end
 end
