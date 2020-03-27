@@ -1,6 +1,7 @@
 defmodule AppApiWeb.CaptureController do
   use AppApiWeb, :controller
   alias AppApi.Captures
+  alias AppApi.Timers
 
   def index(conn, _params) do
     captures = Captures.get_capture_by_id_person(conn.assigns.person.id_person)
@@ -24,12 +25,15 @@ defmodule AppApiWeb.CaptureController do
     capture = Captures.get_capture!(params["id"])
 
     if capture.id_person == conn.assigns.person.id_person do
+      stop_timer(Enum.at(capture.timers, 0))
+
       updates = %{
         completed: params["completed"],
         text: params["text"]
       }
 
       udpatedCatpure = Captures.update_capture(capture, updates)
+
       render(conn, "show.json", capture: udpatedCatpure)
     else
       conn
@@ -44,4 +48,8 @@ defmodule AppApiWeb.CaptureController do
     capture = Captures.create_capture(capture)
     render(conn, "create.json", capture: capture)
   end
+
+  defp stop_timer(%{stopped_at: nil} = timer), do: Timers.stop_timer(timer.id)
+
+  defp stop_timer(_), do: nil
 end
