@@ -31,7 +31,7 @@ defmodule AppApiWeb.AuthServiceApi do
           id_person: data["data"]["id_person"],
           name: "",
           email: data["data"]["email"],
-          avatar: ["data"]["avatar"]
+          avatar: data["data"]["avatar"]
         }
 
         {:ok, person}
