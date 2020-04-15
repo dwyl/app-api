@@ -27,7 +27,13 @@ defmodule AppApiWeb.AuthServiceApi do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         data = Poison.decode!(body)
         # get name from api
-        person = %{id_person: data["data"]["id_person"], name: "", email: data["data"]["email"]}
+        person = %{
+          id_person: data["data"]["id_person"],
+          name: "",
+          email: data["data"]["email"],
+          avatar: ["data"]["avatar"]
+        }
+
         {:ok, person}
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
