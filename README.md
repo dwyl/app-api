@@ -1,19 +1,26 @@
 # AppApi
 
-To start your Phoenix server:
+## Endpoints
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server`
+This API provides the following endpoints:
+- GET `/api/login`: signin/login and get a jwt back
+- GET `/api/person/info`: get your personal user information
+- GET PUT `/api/capture/{idCapture}`: create, update and show a text/capture item
+- GET POST`/api/capture`: create a new item and get the list of items
+- GET POST `/api/capture{idCapture/timers`: create a new timer linked to an item, list timers for an item
+- PUT `/api/capture{idCapture/timers/{idTimer}`: update a timer, i.e. start or stop a timer
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## JWT header
 
-## Learn more
+Except for the login endpoint, all the requests' header need to contain an `Authorization` jwt value.
+This jwt is verified via the pipeline `person`:
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+```elixir
+  pipeline :person do
+    plug AppApi.Plugs.ValidateToken
+  end
+```
+The `ValidateToken` function will then send the jwt to the dwyl
+authentication service and will returns either a `401` unauthorized response
+or the person information when valid.
