@@ -20,6 +20,7 @@ defmodule AppApi.Captures do
   """
   def list_captures do
     Repo.all(Capture)
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
   end
 
   @doc """
