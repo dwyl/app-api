@@ -20,6 +20,7 @@ defmodule AppApiWeb.CaptureView do
       id_person: capture.id_person,
       text: capture.text,
       completed: capture.completed,
+      task: capture.task,
       timers: Enum.map(capture.timers, &TimerView.timer_to_json/1)
     }
   end
