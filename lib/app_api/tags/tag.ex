@@ -1,7 +1,6 @@
 defmodule AppApi.Tags.Tag do
   use Ecto.Schema
   import Ecto.Changeset
-  alias AppApi.Captures.Capture
 
   schema "tags" do
     field :text, :string
