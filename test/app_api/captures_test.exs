@@ -6,7 +6,7 @@ defmodule AppApi.CapturesTest do
   describe "captures" do
     alias AppApi.Captures.Capture
 
-    @valid_attrs %{completed: true, id_person: 42, text: "some text", tags: ""}
+    @valid_attrs %{completed: true, id_person: 42, text: "some text", tags: "tag1, tag2"}
     @update_attrs %{completed: false, id_person: 43, text: "some updated text", tags: "" }
     @invalid_attrs %{completed: nil, id_person: nil, text: nil, tags: ""}
 
