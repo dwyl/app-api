@@ -6,17 +6,14 @@ defmodule AppApi.CapturesTest do
   describe "captures" do
     alias AppApi.Captures.Capture
 
-    @valid_attrs %{completed: true, id_person: 42, text: "some text"}
-    @update_attrs %{completed: false, id_person: 43, text: "some updated text"}
-    @invalid_attrs %{completed: nil, id_person: nil, text: nil}
+    @valid_attrs %{completed: true, id_person: 42, text: "some text", tags: ""}
+    @update_attrs %{completed: false, id_person: 43, text: "some updated text", tags: "" }
+    @invalid_attrs %{completed: nil, id_person: nil, text: nil, tags: ""}
 
     def capture_fixture(attrs \\ %{}) do
-      {:ok, capture} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Captures.create_capture()
-
-      capture
     end
 
     test "list_captures/0 returns all captures" do
@@ -30,19 +27,19 @@ defmodule AppApi.CapturesTest do
     end
 
     test "create_capture/1 with valid data creates a capture" do
-      assert {:ok, %Capture{} = capture} = Captures.create_capture(@valid_attrs)
+      assert %Capture{} = capture = Captures.create_capture(@valid_attrs)
       assert capture.completed == true
       assert capture.id_person == 42
       assert capture.text == "some text"
     end
 
     test "create_capture/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Captures.create_capture(@invalid_attrs)
+      assert catch_error(Captures.create_capture(@invalid_attrs))
     end
 
     test "update_capture/2 with valid data updates the capture" do
       capture = capture_fixture()
-      assert {:ok, %Capture{} = capture} = Captures.update_capture(capture, @update_attrs)
+      assert %Capture{} = capture = Captures.update_capture(capture, @update_attrs)
       assert capture.completed == false
       assert capture.id_person == 43
       assert capture.text == "some updated text"
@@ -50,7 +47,7 @@ defmodule AppApi.CapturesTest do
 
     test "update_capture/2 with invalid data returns error changeset" do
       capture = capture_fixture()
-      assert {:error, %Ecto.Changeset{}} = Captures.update_capture(capture, @invalid_attrs)
+      assert catch_error(Captures.update_capture(capture, @invalid_attrs))
       assert capture == Captures.get_capture!(capture.id)
     end
 

@@ -8,6 +8,7 @@ defmodule AppApi.Captures do
 
   alias AppApi.Captures.Capture
   alias AppApi.Timers.Timer
+  alias AppApi.Tags.Tag
 
   @doc """
   Returns the list of captures.
@@ -20,6 +21,8 @@ defmodule AppApi.Captures do
   """
   def list_captures do
     Repo.all(Capture)
+    |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
+    |> Repo.preload(tags: from(t in Tag, order_by: [asc: t.text]))
   end
 
   @doc """
@@ -39,6 +42,7 @@ defmodule AppApi.Captures do
   def get_capture!(id) do
     Repo.get!(Capture, id)
     |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
+    |> Repo.preload(tags: from(t in Tag, order_by: [asc: t.text]))
   end
 
   def get_capture_by_id_person(id_person) do
@@ -46,7 +50,10 @@ defmodule AppApi.Captures do
       from c in Capture,
         where: c.id_person == ^id_person,
         order_by: [desc: c.inserted_at],
-        preload: [timers: ^from(t in Timer, order_by: [desc: t.inserted_at])]
+        preload: [
+          timers: ^from(t in Timer, order_by: [desc: t.inserted_at]),
+          tags: ^from(t in Tag, order_by: [asc: t.text])
+        ]
 
     Repo.all(query)
   end
@@ -68,6 +75,7 @@ defmodule AppApi.Captures do
     |> Capture.changeset(attrs)
     |> Repo.insert!()
     |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
+    |> Repo.preload(tags: from(t in Tag, order_by: [asc: t.text]))
   end
 
   @doc """
@@ -87,6 +95,7 @@ defmodule AppApi.Captures do
     |> Capture.changeset(attrs)
     |> Repo.update!()
     |> Repo.preload(timers: from(t in Timer, order_by: [desc: t.inserted_at]))
+    |> Repo.preload(tags: from(t in Tag, order_by: [asc: t.text]))
   end
 
   @doc """

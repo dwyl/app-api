@@ -10,7 +10,14 @@ defmodule AppApi.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -43,7 +50,8 @@ defmodule AppApi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 2.0"},
       {:httpoison, "~> 1.6"},
-      {:poison, "~> 4.0"}
+      {:poison, "~> 4.0"},
+      {:excoveralls, "~> 0.12.2", only: [:dev, :test]}
     ]
   end
 
@@ -57,7 +65,9 @@ defmodule AppApi.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      cover: ["coveralls.json"],
+      "cover.html": ["coveralls.html"]
     ]
   end
 end
