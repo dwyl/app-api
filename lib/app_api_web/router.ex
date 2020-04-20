@@ -20,5 +20,6 @@ defmodule AppApiWeb.Router do
     resources "/capture", CaptureController, only: [:index, :create, :show, :update] do
       resources "/timers", TimerController, only: [:index, :create, :update]
     end
+    get "/tags", TagController, :index
   end
 end
