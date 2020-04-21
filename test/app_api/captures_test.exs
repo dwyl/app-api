@@ -7,7 +7,7 @@ defmodule AppApi.CapturesTest do
     alias AppApi.Captures.Capture
 
     @valid_attrs %{completed: true, id_person: 42, text: "some text", tags: "tag1, tag2"}
-    @update_attrs %{completed: false, id_person: 43, text: "some updated text", tags: "" }
+    @update_attrs %{completed: false, id_person: 43, text: "some updated text", tags: "tag3, tag4" }
     @invalid_attrs %{completed: nil, id_person: nil, text: nil, tags: ""}
 
     def capture_fixture(attrs \\ %{}) do
@@ -31,6 +31,11 @@ defmodule AppApi.CapturesTest do
       assert capture.completed == true
       assert capture.id_person == 42
       assert capture.text == "some text"
+    end
+
+    test "get_capture_by_id_person/1 returns the capture with given id person" do
+      capture = capture_fixture() # id person is 42
+      assert Captures.get_capture_by_id_person(42) == [capture]
     end
 
     test "create_capture/1 with invalid data returns error changeset" do
@@ -60,6 +65,11 @@ defmodule AppApi.CapturesTest do
     test "change_capture/1 returns a capture changeset" do
       capture = capture_fixture()
       assert %Ecto.Changeset{} = Captures.change_capture(capture)
+    end
+
+    test "add tag" do
+      capture = capture_fixture(%{tags: "hello"})
+      assert %Capture{} = capture
     end
   end
 end

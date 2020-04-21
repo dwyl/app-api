@@ -9,19 +9,6 @@ defmodule AppApi.Tags do
   alias AppApi.Tags.Tag
 
   @doc """
-  Returns the list of tags.
-
-  ## Examples
-
-      iex> list_tags()
-      [%Tag{}, ...]
-
-  """
-  def list_tags do
-    Repo.all(Tag)
-  end
-
-  @doc """
   Returns the list of tags created by a person
   i.e. default tags
   """

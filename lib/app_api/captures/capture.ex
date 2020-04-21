@@ -29,12 +29,12 @@ defmodule AppApi.Captures.Capture do
 
   defp parse_tags(params) do
     tags =
-      (params["tags"] || "")
+      (params[:tags] || "")
       |> String.split(",")
       |> Enum.map(&String.trim/1)
       |> Enum.reject(&(&1 == ""))
 
-    insert_and_get_all(tags, params["id_person"])
+    insert_and_get_all(tags, params[:id_person])
   end
 
   defp insert_and_get_all([], _id_person) do
@@ -42,8 +42,12 @@ defmodule AppApi.Captures.Capture do
   end
 
   defp insert_and_get_all(tags, id_person) do
-    maps = Enum.map(tags, &%{text: &1, id_person: id_person})
-    Repo.insert_all(Tag, maps, on_conflict: :nothing)
-    Repo.all(from t in Tag, where: t.name in ^tags)
+    Enum.each(tags, fn t ->
+      attrs = %{text: t, id_person: id_person}
+      changeset = Tag.changeset(%Tag{}, attrs)
+      Repo.insert!(changeset, on_conflict: :nothing)
+    end)
+
+    Repo.all(from t in Tag, where: t.text in ^tags)
   end
 end
