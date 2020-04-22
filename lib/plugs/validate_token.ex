@@ -9,9 +9,13 @@ defmodule AppApi.Plugs.ValidateToken do
   def init(opts), do: opts
 
   def call(conn, _) do
-    case AppApiWeb.AuthServiceApi.get_person_information(conn) do
-      {:error, _} -> unauthorized(conn)
-      {:ok, person} -> assign(conn, :person, person)
+    if Mix.env() == :test do
+      assign(conn, :person, %{email: "email", name: "name", id_person: 42})
+    else
+      case AppApiWeb.AuthServiceApi.get_person_information(conn) do
+        {:error, _} -> unauthorized(conn)
+        {:ok, person} -> assign(conn, :person, person)
+      end
     end
   end
 
@@ -21,5 +25,4 @@ defmodule AppApi.Plugs.ValidateToken do
     |> send_resp(401, "unauthorized")
     |> halt()
   end
-
 end
