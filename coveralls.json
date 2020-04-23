@@ -1,9 +1,9 @@
 {
-    "coverage_options": {
-      "minimum_coverage": 100
-    },
-    "skip_files": [
-      "test/",
-      "lib/app_api.ex"
-    ]
-  }
+  "coverage_options": {
+    "minimum_coverage": 80
+  },
+  "skip_files": [
+    "test/",
+    "lib/app_api.ex"
+  ]
+}

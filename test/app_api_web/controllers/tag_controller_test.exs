@@ -14,7 +14,7 @@ defmodule AppApi.TagControllerTest do
     test "index endpoint", %{conn: conn} do
       tag_fixture()
       conn = get(conn, Routes.tag_path(conn, :index))
-      response =  get_response = json_response(conn, 200)
+      response = json_response(conn, 200)
       assert Enum.count(response["data"]) == 1
     end
   end
