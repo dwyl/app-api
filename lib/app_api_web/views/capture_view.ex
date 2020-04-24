@@ -1,6 +1,7 @@
 defmodule AppApiWeb.CaptureView do
   use AppApiWeb, :view
   alias AppApiWeb.TimerView
+  alias AppApiWeb.TagView
 
   def render("index.json", %{captures: captures}) do
     %{data: Enum.map(captures, &capture_to_json/1)}
@@ -20,7 +21,8 @@ defmodule AppApiWeb.CaptureView do
       id_person: capture.id_person,
       text: capture.text,
       completed: capture.completed,
-      timers: Enum.map(capture.timers, &TimerView.timer_to_json/1)
+      timers: Enum.map(capture.timers, &TimerView.timer_to_json/1),
+      tags: Enum.map(capture.tags, &TagView.tag_to_json/1)
     }
   end
 end

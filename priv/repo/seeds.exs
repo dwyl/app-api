@@ -9,3 +9,8 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias AppApi.Tags
+
+Tags.create_tag(%{text: "note", id_person: nil})
+Tags.create_tag(%{text: "task", id_person: nil})

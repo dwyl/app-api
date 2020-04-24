@@ -9,19 +9,6 @@ defmodule AppApi.Timers do
   alias AppApi.Timers.Timer
 
   @doc """
-  Returns the list of timers.
-
-  ## Examples
-
-      iex> list_timers()
-      [%Timer{}, ...]
-
-  """
-  def list_timers do
-    Repo.all(Timer)
-  end
-
-  @doc """
   Gets a single timer.
 
   Raises `Ecto.NoResultsError` if the Timer does not exist.
