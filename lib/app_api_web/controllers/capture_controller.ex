@@ -29,7 +29,8 @@ defmodule AppApiWeb.CaptureController do
 
       updates = %{
         completed: params["completed"],
-        text: params["text"]
+        text: params["text"],
+        tags: params["tags"]
       }
 
       udpatedCatpure = Captures.update_capture(capture, updates)
